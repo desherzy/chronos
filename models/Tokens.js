@@ -9,7 +9,7 @@ const Tokens = sequelize.define('Tokens', {
         autoIncrement: true,
         allowNull: false
     },
-    userId: {
+    user_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
@@ -17,8 +17,13 @@ const Tokens = sequelize.define('Tokens', {
             key: 'id'
         }
     },
-    refreshToken: {
+    refresh_token: {
         type: DataTypes.TEXT,
+        allowNull: false
+    },
+    session_id: {
+        type: DataTypes.STRING,
+        unique: true,
         allowNull: false
     }
 }, {

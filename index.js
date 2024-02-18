@@ -5,6 +5,7 @@ const initializeDatabase = require('./dbInit');
 const app = express();
 const authRouter = require('./routes/authRoutes');
 const calendarRouter = require('./routes/calendarRoutes');
+const invitationRouter = require('./routes/invitationRoutes');
 const userRouter = require('./routes/userRoutes');
 const errorMiddleware = require('./middlewares/errorMiddleware');
 
@@ -15,6 +16,7 @@ app.use(cookieParser());
 app.use('/api/auth', authRouter);
 app.use('/api/users', userRouter);
 app.use('/api/calendars', calendarRouter);
+app.use('/api/invitation', invitationRouter);
 app.use(errorMiddleware);
 
 

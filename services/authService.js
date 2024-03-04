@@ -90,20 +90,21 @@ class AuthService {
         return token;
     }
 
-    async refresh(refreshToken, sessionId) {
+    async refresh(refreshToken) {
         if (!refreshToken) {
             throw ApiError.unauthorizedError()
         }
+        const extractedUser = await tokenService.validateRefreshToken(refreshToken);
         const userData = tokenService.validateRefreshToken(refreshToken);
-        const tokenFromDb = await tokenService.findTokenInDB(refreshToken, sessionId);
+        const tokenFromDb = await tokenService.findTokenInDB(refreshToken, extractedUser.sessionId);
 
         if (!userData || !tokenFromDb) {
             throw ApiError.unauthorizedError()
         }
         const user = await User.findOne({ where: { id: userData.id } });
-        const userDto = new UserDto(user, sessionId);
+        const userDto = new UserDto(user, extractedUser.sessionId);
         const tokens = tokenService.generateTokens({...userDto});
-        await tokenService.saveToken(userDto.id, tokens.refreshToken, sessionId);
+        await tokenService.saveToken(userDto.id, tokens.refreshToken, extractedUser.sessionId);
 
         return {
             ...tokens,

@@ -1,6 +1,7 @@
 const authService = require("../services/authService");
 const {validationResult} = require('express-validator');
 const ApiError = require('../exceptions/apiError');
+const tokenService = require("../services/tokenService");
 
 
 class AuthController {
@@ -66,8 +67,7 @@ class AuthController {
     async refresh(req, res, next) {
         try {
             const {refreshToken} = req.cookies;
-            const sessionId = req.user.sessionId;
-            const userData = await authService.refresh(refreshToken, sessionId);
+            const userData = await authService.refresh(refreshToken);
             res.cookie('refreshToken', userData.refreshToken, {
                 maxAge: 15 * 24 * 60 * 60 * 1000, 
                 secure: true,

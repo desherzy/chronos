@@ -32,7 +32,7 @@ function Registration() {
     <div>
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
-        <input type="text" name="login" value={formData.email} onChange={handleChange} placeholder="login" />
+        <input type="text" name="login" value={formData.login} onChange={handleChange} placeholder="login" />
         <input type="text" name="email" value={formData.email} onChange={handleChange} placeholder="Email" />
         <input type="password" name="password" value={formData.password} onChange={handleChange} placeholder="Password" />
         <button type="submit">Log in</button>

@@ -7,6 +7,7 @@ const bcrypt = require('bcrypt');
 const uuid = require('uuid');  
 const mailService = require('../services/mailService');
 const tokenService = require('../services/tokenService');
+const calendarService = require('./calendarService');
 
 class AuthService {
 
@@ -39,6 +40,8 @@ class AuthService {
         const userDto = new UserDto(user, sessionId);
         const tokens = tokenService.generateTokens({...userDto});
         await tokenService.saveToken(userDto.id, tokens.refreshToken, sessionId);
+
+        await calendarService.createCalendar(user.id, "Main", "Default calendar", "#D1D5DB")
 
         return {
             ...tokens,

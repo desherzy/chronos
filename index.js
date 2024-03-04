@@ -8,6 +8,7 @@ const authRouter = require('./routes/authRoutes');
 const calendarRouter = require('./routes/calendarRoutes');
 const invitationRouter = require('./routes/invitationRoutes');
 const userRouter = require('./routes/userRoutes');
+const eventRouter = require('./routes/eventRoutes');
 const errorMiddleware = require('./middlewares/errorMiddleware');
 
 initializeDatabase();
@@ -23,6 +24,7 @@ app.use(cookieParser());
 app.use(cors(corsOptions));
 app.use('/api/auth', authRouter);
 app.use('/api/users', userRouter);
+app.use('/api/events', eventRouter);
 app.use('/api/calendars', calendarRouter);
 app.use('/api/invitation', invitationRouter);
 app.use(errorMiddleware);

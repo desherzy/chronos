@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../dbConfig');
+const Permission = require('./Permission');
 
 const Calendar = sequelize.define('Calendar', {
     id: {
@@ -25,5 +26,6 @@ const Calendar = sequelize.define('Calendar', {
     tableName: 'calendars',
     timestamps: false
 });
+
 
 module.exports = Calendar;

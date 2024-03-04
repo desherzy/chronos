@@ -24,7 +24,10 @@ class CalendarService {
     async getUserCalendars(userId) {  
         const userCalendars = await UserCalendar.findAll({
             where: { user_id: userId },
-            include: [{ model: Calendar, include: Permission }]
+            include: [
+                { model: Calendar },
+                { model: Permission }
+            ]
         });
 
         const calendarDTOs = userCalendars.map(userCalendar => {

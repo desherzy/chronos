@@ -19,4 +19,5 @@ const Permission = sequelize.define('Permission', {
     timestamps: false
 });
 
+
 module.exports = Permission;

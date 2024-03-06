@@ -12,6 +12,7 @@ import Sidebar from './components/Sidebar';
 import ProfileSettings from './components/ProfileSettings';
 import Invitations from './components/Invitations';
 import CalendarList from './components/CalendarList';
+import CalendarPage from './components/CalendarPage';
 
 function App() {
   const { isAuthenticated, emailConfirmed, refreshUser } = useAuthStore();
@@ -56,7 +57,7 @@ function App() {
           <Route path='/settings' element={<PrivateRoute> <ProfileSettings /> </PrivateRoute>} />
           <Route path='/invitations' element={<PrivateRoute> <Invitations /> </PrivateRoute>} />
           <Route path="/calendars" element={<PrivateRoute> <CalendarList/> </PrivateRoute>} />
-          <Route path="/calendars/:userId" element={<PrivateRoute> <Calendar/> </PrivateRoute>} />
+          <Route path="/calendars/:userId" element={<PrivateRoute> <CalendarPage/> </PrivateRoute>} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </BrowserRouter>

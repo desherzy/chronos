@@ -19,16 +19,7 @@ function CalendarList() {
     return (
         <div className="ml-[70px] mt-[15px] grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-2">
            {calendars.map(calendar => (
-            <>
                 <CalendarItem key={calendar.id} calendar={calendar} />
-                <CalendarItem key={calendar.id} calendar={calendar} />
-                <CalendarItem key={calendar.id} calendar={calendar} />
-                <CalendarItem key={calendar.id} calendar={calendar} />
-                <CalendarItem key={calendar.id} calendar={calendar} />
-                <CalendarItem key={calendar.id} calendar={calendar} />
-                <CalendarItem key={calendar.id} calendar={calendar} />
-                <CalendarItem key={calendar.id} calendar={calendar} />
-            </>
             ))}
         </div>
     );

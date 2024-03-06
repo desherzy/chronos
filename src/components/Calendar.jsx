@@ -1,71 +1,145 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, FormControl, FormLabel, Input, Textarea, Select } from "@chakra-ui/react";
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
+import "../index.css";
 
 function Calendar() {
-    const [currentEvents, setCurrentEvents] = useState([])
+    const [currentEvents, setCurrentEvents] = useState([]);
+    const [selectedEvent, setSelectedEvent] = useState(null);
+    const [isCreateEventModalOpen, setIsCreateEventModalOpen] = useState(false);
+    const [isEventInfoModalOpen, setIsEventInfoModalOpen] = useState(false);
+    const [eventName, setEventName] = useState('');
+    const [eventDescription, setEventDescription] = useState('');
+    const [eventColor, setEventColor] = useState('');
 
     function handleDateSelect(selectInfo) {
-      let title = prompt('Please enter a new title for your event')
-      let calendarApi = selectInfo.view.calendar
-  
-      calendarApi.unselect() // clear date selection
-  
-      if (title) {
-        calendarApi.addEvent({
-          id: 1,
-          title,
-          start: selectInfo.startStr,
-          end: selectInfo.endStr,
-          allDay: selectInfo.allDay
-        })
-      }
+        setSelectedEvent({
+            start: selectInfo.startStr,
+            end: selectInfo.endStr,
+            allDay: selectInfo.allDay
+        });
+        setIsCreateEventModalOpen(true);
     }
-  
+
     function handleEventClick(clickInfo) {
-      if (prompt(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
-        clickInfo.event.remove()
-      }
+        setSelectedEvent(clickInfo.event);
+        setIsEventInfoModalOpen(true);
     }
-  
+
     function handleEvents(events) {
-      setCurrentEvents(events)
+        setCurrentEvents(events);
     }
 
-    function renderEventContent(eventInfo) {
-        return (
-          <>
-            <b>{eventInfo.timeText}</b>
-            <i>{eventInfo.event.title}</i>
-            <p>desription desription </p>
-          </>
-        )
-      }
+    function handleCloseModal() {
+        setIsCreateEventModalOpen(false);
+        setIsEventInfoModalOpen(false);
+        setSelectedEvent(null);
+        setEventName('');
+        setEventDescription('');
+        setEventColor('');
+    }
 
-  return (
-    <div className='app-main'>
-    <FullCalendar
-      plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-      headerToolbar={{
-        left: 'prev,next today',
-        center: 'title',
-        right: 'dayGridMonth,timeGridWeek,timeGridDay'
-      }}
-      initialView='dayGridMonth'
-      editable={true}
-      selectable={true}
-      selectMirror={true}
-      dayMaxEvents={true}
-     // initialEvents={INITIAL_EVENTS} // alternatively, use the `events` setting to fetch from a feed
-      select={handleDateSelect}
-      eventContent={renderEventContent} // custom render function
-      eventClick={handleEventClick}
-      eventsSet={handleEvents} // called after events are initialized/added/changed/removed
-    />
-  </div>
-  );
+    function handleCreateEvent() {
+        const newEvent = {
+            title: eventName,
+            descr: eventDescription,
+            backgroundColor: eventColor,
+            start: selectedEvent.start,
+            end: selectedEvent.end,
+            allDay: selectedEvent.allDay
+        };
+        setCurrentEvents([...currentEvents, newEvent]);
+        setIsCreateEventModalOpen(false);
+    }
+
+    function handleDeleteEvent() {
+
+        setIsEventInfoModalOpen(false);
+    }
+
+    return (
+        <div>
+            <FullCalendar
+                plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+                headerToolbar={{
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                }}
+                initialView='dayGridMonth'
+                editable={true}
+                selectable={true}
+                selectMirror={true}
+                dayMaxEvents={true}
+                aspectRatio={1.5}
+                height='100vh'
+                contentHeight={400}
+                windowResize={() => console.log('window was resized')}
+                select={handleDateSelect}
+                eventClick={handleEventClick}
+                events={currentEvents}
+            />
+
+            {/* Create Event Modal */}
+            <Modal isOpen={isCreateEventModalOpen} onClose={handleCloseModal}>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Create Event</ModalHeader>
+                    <ModalBody>
+                        <FormControl>
+                            <FormLabel>Name</FormLabel>
+                            <Input value={eventName} onChange={(e) => setEventName(e.target.value)} />
+                        </FormControl>
+                        <FormControl mt={4}>
+                            <FormLabel>Description</FormLabel>
+                            <Textarea value={eventDescription} onChange={(e) => setEventDescription(e.target.value)} />
+                        </FormControl>
+                        <FormControl mt={4}>
+                            <FormLabel>Color</FormLabel>
+                            <Select value={eventColor} onChange={(e) => setEventColor(e.target.value)}>
+                                <option value="red">Red</option>
+                                <option value="blue">Blue</option>
+                                <option value="green">Green</option>
+                                {/* Add more color options as needed */}
+                            </Select>
+                        </FormControl>
+                        <p>Start: {selectedEvent?.start}</p>
+                        <p>End: {selectedEvent?.end}</p>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button colorScheme="blue" mr={3} onClick={handleCreateEvent}>
+                            Save
+                        </Button>
+                        <Button onClick={handleCloseModal}>Cancel</Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
+
+            {/* Event Info Modal */}
+            <Modal isOpen={isEventInfoModalOpen} onClose={handleCloseModal}>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Event Information</ModalHeader>
+                    <ModalBody>
+                      <p>Title: {selectedEvent?.title}</p>
+                      <p>Description: {selectedEvent?.descr}</p>
+                      <p>Color: {selectedEvent?.backgroundColor}</p>
+                      <p>Start: {selectedEvent?.start?.toLocaleString()}</p>
+                      <p>End: {selectedEvent?.end?.toLocaleString()}</p>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button colorScheme="red" mr={3} onClick={handleDeleteEvent}>
+                            Delete Event
+                        </Button>
+                        <Button onClick={handleCloseModal}>Close</Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
+        </div>
+    );
 }
 
 export default Calendar;

@@ -25,3 +25,15 @@ body > div { /* the react root */
   max-width: 1100px;
   margin: 0 auto;
 }
+
+@media (max-width: 768px) {
+  .fc-header-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .fc-header-toolbar .fc-left, .fc-header-toolbar .fc-center, .fc-header-toolbar .fc-right {
+    flex-basis: 100%;
+    margin-bottom: 10px;
+  }
+}

@@ -18,7 +18,7 @@ const useCalendarStore = create((set) => ({
     }
   },
 
-  fetchEvents: async (calendarId) => {
+  fetchCalendarEvents: async (calendarId) => {
     try {
       const response = await $api.get(`/events/`);
       const data = await response.data;

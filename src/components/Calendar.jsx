@@ -45,7 +45,7 @@ function Calendar() {
     function handleCreateEvent() {
         const newEvent = {
             title: eventName,
-            descr: eventDescription,
+            description: eventDescription,
             backgroundColor: eventColor,
             start: selectedEvent.start,
             end: selectedEvent.end,
@@ -56,7 +56,11 @@ function Calendar() {
     }
 
     function handleDeleteEvent() {
+        const updatedEvents = currentEvents.filter(event => event.title !== selectedEvent.title);
+        setCurrentEvents(updatedEvents);
 
+
+        console.log(updatedEvents);
         setIsEventInfoModalOpen(false);
     }
 
@@ -125,7 +129,7 @@ function Calendar() {
                     <ModalHeader>Event Information</ModalHeader>
                     <ModalBody>
                       <p>Title: {selectedEvent?.title}</p>
-                      <p>Description: {selectedEvent?.descr}</p>
+                      <p>Description: {selectedEvent?.extendedProps?.description}</p>
                       <p>Color: {selectedEvent?.backgroundColor}</p>
                       <p>Start: {selectedEvent?.start?.toLocaleString()}</p>
                       <p>End: {selectedEvent?.end?.toLocaleString()}</p>

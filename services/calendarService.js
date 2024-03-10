@@ -10,7 +10,7 @@ class CalendarService {
 
     async checkPermissions(userId, calendarId) { 
         try {
-            const userCalendar = UserCalendar.findAll({where: {calendar_id: calendarId, user_id: userId}});
+            const userCalendar = await UserCalendar.findOne({where: {calendar_id: calendarId, user_id: userId}});
             if (userCalendar.permission_id == 1 || userCalendar.permission_id == 2) {
                 return true;
             } else {

@@ -5,7 +5,7 @@ const calendarController = require('../controllers/calendarController');
 const eventController = require('../controllers/eventController');
 const router = new Router();
 
-router.get('/', authMiddleware, eventController.getCalendarEvents);
+router.get('/:id', authMiddleware, eventController.getCalendarEvents);
 router.post('/', authMiddleware, eventController.createEvent);
 router.patch('/:id', authMiddleware, eventController.updateEvent);
 router.delete('/:id', authMiddleware, eventController.deleteEvent);

@@ -8,7 +8,7 @@ class EventController {
     async getCalendarEvents(req, res, next) {
         try {
             const userId = req.user.id;
-            const { calendarId } = req.body;
+            const calendarId = req.params.id;
 
             await calendarService.checkPermissions(userId, calendarId);
             const events = await eventService.getCalendarEvents(calendarId);
@@ -21,10 +21,10 @@ class EventController {
     async createEvent(req, res, next) {
         try {
             const userId = req.user.id;
-            const { startTime, endTime, color, name, description, calendarId } = req.body;
+            const { start, end, backgroundColor, title, description, calendarId, category } = req.body;
 
             await calendarService.checkPermissions(userId, calendarId);
-            const event = await eventService.createEvent(startTime, endTime, color, name, description, userId, calendarId);
+            const event = await eventService.createEvent(start, end, backgroundColor, title, description, category, userId, calendarId);
             res.json(event);
         } catch (e) {
             next(e);

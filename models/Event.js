@@ -8,15 +8,19 @@ const Event = sequelize.define('Event', {
         autoIncrement: true
     },
     start_time: {
-        type: DataTypes.TIME,
+        type: DataTypes.STRING,
         allowNull: false
     },
     end_time: {
-        type: DataTypes.TIME,
+        type: DataTypes.STRING,
         allowNull: false
     },
     name: {
         type: DataTypes.STRING,
+        allowNull: false
+    },
+    category: {
+        type: DataTypes.ENUM('reminder', 'task', 'arrangment'),
         allowNull: false
     },
     description: {

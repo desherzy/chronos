@@ -14,10 +14,11 @@ class EventService {
         return eventDTOs;
     }
 
-    async createEvent(startTime, endTime, color, name, description, userId, calendarId) {
+    async createEvent(startTime, endTime, color, name, description, category, userId, calendarId) {
         const newEvent = await Event.create({
-            startTime: startTime,
-            endTime: endTime,
+            start_time: startTime,
+            end_time: endTime,
+            category: category,
             color: color,
             name: name,
             description: description

@@ -18,20 +18,37 @@ const useCalendarStore = create((set) => ({
     }
   },
 
-  fetchCalendarEvents: async (calendarId) => {
+  createEvent: async (newEvent, calendarId) => {
     try {
-      const response = await $api.get(`/events/`);
+      const response = await $api.post('/events', newEvent);
+      const data = await response.data;
+
+      const currentState = set.getState();
+      const updatedEvents = {
+        ...currentState.events,
+        [calendarId]: [...(currentState.events[calendarId] || []), data]
+      };
+
+      set({ events: updatedEvents });
+    } catch (error) {
+      console.error('Error creating event:', error);
+    }
+  },
+
+  fetchCalendarEvents: async (calendar) => {
+    try {
+      const response = await $api.get(`/events/${calendar}`);
       const data = await response.data;
 
 
       set((state) => ({
         events: {
           ...state.events,
-          [calendarId]: data,
+          [calendar]: data,
         },
       }));
     } catch (error) {
-      console.error(`Error fetching events for calendar ${calendarId}:`, error);
+      console.error(`Error fetching events for calendar ${calendar}:`, error);
     }
   },
 
@@ -39,11 +56,12 @@ const useCalendarStore = create((set) => ({
     const { calendars } = set.getState();
     return calendars.find(calendar => calendar.id === calendarId);
   },
-
-  getEventsByCalendarId: (calendarId) => {
-    const { events } = set.getState();
+  
+  getEventsByCalendarId: (calendarId, { getState }) => {
+    const { events } = getState();
     return events[calendarId] || [];
   }
+  
 }));
 
 export default useCalendarStore;

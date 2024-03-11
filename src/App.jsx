@@ -57,7 +57,7 @@ function App() {
           <Route path='/settings' element={<PrivateRoute> <ProfileSettings /> </PrivateRoute>} />
           <Route path='/invitations' element={<PrivateRoute> <Invitations /> </PrivateRoute>} />
           <Route path="/calendars" element={<PrivateRoute> <CalendarList/> </PrivateRoute>} />
-          <Route path="/calendars/:userId" element={<PrivateRoute> <CalendarPage/> </PrivateRoute>} />
+          <Route path="/calendars/:calendarId" element={<PrivateRoute> <CalendarPage/> </PrivateRoute>} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </BrowserRouter>

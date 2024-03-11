@@ -2,10 +2,20 @@ import React, { useEffect } from 'react';
 import '../styles/tailwind.css';
 import Calendar from './Calendar';
 import { Box, Flex } from '@chakra-ui/react';
+import useCalendarStore from '../store/calendar';
+import { useParams } from 'react-router-dom';
 
 
-
-function CalendarPage() {                          
+function CalendarPage() {
+    const { fetchCalendarEvents } = useCalendarStore();
+    const { calendarId } = useParams();
+    
+    useEffect(() => {
+        const fetchData = async () => {
+            await fetchCalendarEvents(calendarId);
+        };
+        fetchData();
+    }, [fetchCalendarEvents]);
 
     return (
         <Flex  direction={['column', 'row']} flexWrap="wrap" justify="center" className="ml-[70px]">

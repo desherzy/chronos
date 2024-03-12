@@ -9,8 +9,7 @@ import { useParams } from 'react-router-dom';
 import useCalendarStore from '../store/calendar';
 
 function Calendar() {
-    const { createEvent, getEventsByCalendarId } = useCalendarStore();
-    const [currentEvents, setCurrentEvents] = useState([]);
+    const { createEvent, getEventsByCalendarId, deleteEvent } = useCalendarStore();
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [isCreateEventModalOpen, setIsCreateEventModalOpen] = useState(false);
     const [isEventInfoModalOpen, setIsEventInfoModalOpen] = useState(false);
@@ -19,27 +18,8 @@ function Calendar() {
     const [eventColor, setEventColor] = useState('');
     const [eventCategory, setEventCategory] = useState('reminder');
     const { calendarId } = useParams();
-  
-    useEffect(() => {
-        const selectEvents = async () => {
-            const calendar = await useCalendarStore.getState().getEventsByCalendarId(calendarId, { getState: useCalendarStore.getState });
-            const formattedEvents = calendar.map(event => ({
-                title: event.name,
-                description: event.description,
-                category: event.category,
-                backgroundColor: event.color,
-                start: event.startTime,
-                end: event.endTime,
-                allDay: false
-            }));
-            setCurrentEvents([...formattedEvents]);
-            console.log("CURRENT:         ");
-            console.log(currentEvents);
-            console.log(" STOP CUR         ");
-        }
+    const events = useCalendarStore((state) => state.events[calendarId] || []);
 
-        selectEvents();
-      }, [calendarId]);
 
     function handleDateSelect(selectInfo) {
         setSelectedEvent({
@@ -53,10 +33,6 @@ function Calendar() {
     function handleEventClick(clickInfo) {
         setSelectedEvent(clickInfo.event);
         setIsEventInfoModalOpen(true);
-    }
-
-    function handleEvents(events) {
-        setCurrentEvents(events);
     }
 
     function handleCloseModal() {
@@ -80,23 +56,22 @@ function Calendar() {
             calendarId: calendarId,
             allDay: selectedEvent.allDay
         };
-        await createEvent(newEvent, calendarId); 
-        setCurrentEvents([...currentEvents, newEvent]);
+        await createEvent(newEvent, calendarId);
         setIsCreateEventModalOpen(false);
     }
 
-    function handleDeleteEvent() {
-        const updatedEvents = currentEvents.filter(event => event.title !== selectedEvent.title);
-        setCurrentEvents(updatedEvents);
-
-
-        console.log(updatedEvents);
-        setIsEventInfoModalOpen(false);
+    async function handleDeleteEvent() {
+        try {
+            await deleteEvent(selectedEvent.id, calendarId);
+            setIsEventInfoModalOpen(false);
+        } catch(error) {
+            console.log('Error deleting event:', error);
+        }
     }
 
     return (
         <div>
-            <FullCalendar
+          <FullCalendar
                 plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
                 headerToolbar={{
                     left: 'prev,next today',
@@ -114,7 +89,7 @@ function Calendar() {
                 windowResize={() => console.log('window was resized')}
                 select={handleDateSelect}
                 eventClick={handleEventClick}
-                events={currentEvents}
+                events={events}
             />
 
          
@@ -166,6 +141,7 @@ function Calendar() {
                 <ModalContent>
                     <ModalHeader>Event Information</ModalHeader>
                     <ModalBody>
+                      <p>iD: {selectedEvent?.id}</p>
                       <p>Title: {selectedEvent?.title}</p>
                       <p>Description: {selectedEvent?.extendedProps?.description}</p>
                       <p>Category: {selectedEvent?.extendedProps?.category}</p>

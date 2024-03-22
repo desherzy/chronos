@@ -5,6 +5,7 @@ const router = new Router();
 
 router.get('/', userController.getUsers);
 router.get('/:id', userController.getUser);
+router.get('/calendar/:id', userController.getCalendarUsers);
 router.patch('/update', authMiddleware, userController.updateUser);
 router.patch('/avatar', authMiddleware, userController.uploadUsersAvatar);
 router.delete('/avatar', authMiddleware, userController.deleteUsersAvatar);

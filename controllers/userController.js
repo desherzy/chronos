@@ -24,6 +24,16 @@ class UserController {
         }
     }
 
+    async getCalendarUsers(req, res, next) {
+        try {
+            const calendarId = req.params.id;
+            const users = await userService.getCalendarUsers(calendarId);
+            res.json(users);
+        } catch(e) {
+            next(e);
+        }
+    }
+
     async updateUser(req, res, next) {
         try {
             const userId = req.user.id;

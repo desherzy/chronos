@@ -35,5 +35,6 @@ const UserCalendar = sequelize.define('UserCalendar', {
 
 UserCalendar.belongsTo(Calendar, { foreignKey: 'calendar_id' });
 UserCalendar.belongsTo(Permission, { foreignKey: 'permission_id' });
+UserCalendar.belongsTo(User, { foreignKey : "user_id", sourceKey : 'id' });
 
 module.exports = UserCalendar;

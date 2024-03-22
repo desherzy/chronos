@@ -7,6 +7,7 @@ const UserCalendar = require('../models/UserCalendar');
 const UserEvent = require('../models/UserEvent');
 const Links = require('../models/Links');
 const Tokens = require('../models/Tokens');
+const Permission = require('../models/Permission');
 
 class UserService {
     
@@ -37,6 +38,40 @@ class UserService {
         } catch (error) {
           throw error;
         }
+    }
+
+    async getCalendarUsers(calendarId) {
+      try {
+        const users = await UserCalendar.findAll({
+          where: { calendar_id: calendarId },
+          include: [
+            {
+              model: User,
+              attributes: ['id', 'login', 'profile_image'],
+            },
+            {
+              model: Permission,
+              attributes: ['id', 'name'],
+            },
+          ],
+        });
+    
+        const participants = users.map((userCalendar) => {
+          const user = userCalendar.User;
+          const permission = userCalendar.Permission;
+    
+          return {
+            id: user.id,
+            login: user.login,
+            permission: permission.name,
+            profileImage: user.profile_image,
+          };
+        });
+    
+        return participants;
+      } catch (error) {
+        throw error;
+      }
     }
 
     async updateUser(id, updatedFields) {

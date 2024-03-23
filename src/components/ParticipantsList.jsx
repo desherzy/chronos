@@ -18,7 +18,7 @@ function ParticipantsList() {
   return (
     <Box>
       <Box textAlign="center" fontSize="xl" fontWeight="bold" mb={4}>Members</Box>
-      <List spacing={4} paddingY={4}>
+      <List overflowY="auto" height="30vh" spacing={4} paddingY={4}>
         {participants.map((participant) => (
          <ListItem key={participant.id} bg="#f1e8ff" padding={3} borderRadius={4}boxShadow="md">
             <ParticipantCard user={participant} />

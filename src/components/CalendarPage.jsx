@@ -8,12 +8,14 @@ import EventsList from './EventsList';
 import ParticipantsList from './ParticipantsList';
 import { Plus } from 'lucide-react';
 import CreateEventModal from './CreateEventModal';
+import InviteUserModal from './InviteUserModal';
 
 
 function CalendarPage() {
-    const { fetchCalendarEvents } = useCalendarStore();
+    const { fetchCalendarEvents, fetchIncomingInvites } = useCalendarStore();
     const { calendarId } = useParams();
     const [isCreateEventModalOpen, setIsCreateEventModalOpen] = useState(false);
+    const [isInviteModalOpen, setIsInviteEventModalOpen] = useState(false);
 
     const handleOpenCreateEventModal = () => {
         setIsCreateEventModalOpen(true);
@@ -22,10 +24,19 @@ function CalendarPage() {
     const handleCloseCreateEventModal = () => {
         setIsCreateEventModalOpen(false);
     };
+
+    const handleOpenInviteEventModal = () => {
+        setIsInviteEventModalOpen(true);
+    };
+
+    const handleCloseInviteEventModal = () => {
+        setIsInviteEventModalOpen(false);
+    };
     
     useEffect(() => {
         const fetchData = async () => {
             await fetchCalendarEvents(calendarId);
+            await fetchIncomingInvites();
         };
         fetchData();
     }, [fetchCalendarEvents]);
@@ -37,7 +48,9 @@ function CalendarPage() {
             </Box>
 
             <Box w={['100%', '30%']} p={4} className="calendar-settings">
+
                 <EventsList/>
+
                     <Button
                         variant="solid"
                         bg="blue.100"
@@ -48,12 +61,16 @@ function CalendarPage() {
                         >
                         Add Event
                     </Button>
+
                 <ParticipantsList/>
+
                     <Button
                         variant="solid"
                         bg="green.100"
                         width="100%"
+                        mb={4}
                         leftIcon={<Icon as={Plus} />}
+                        onClick={handleOpenInviteEventModal}
                     >
                         Add Member
                     </Button>
@@ -61,6 +78,11 @@ function CalendarPage() {
             {isCreateEventModalOpen && (
                 <CreateEventModal isOpen={isCreateEventModalOpen} onClose={handleCloseCreateEventModal} />
             )}
+
+            {isInviteModalOpen && (
+                <InviteUserModal isOpen={isInviteModalOpen} onClose={handleCloseInviteEventModal} />
+            )}
+
             </Box>
         </Flex>
     );

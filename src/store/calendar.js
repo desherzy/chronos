@@ -3,6 +3,7 @@ import $api from '../axios';
 
 const useCalendarStore = create((set, get) => ({
   calendars: [],
+  invites: [], //fetch invites, accept, decline
   events: {},
 
   fetchCalendars: async () => {
@@ -91,6 +92,27 @@ const useCalendarStore = create((set, get) => ({
       }));
     } catch (error) {
       console.error(`Error fetching events for calendar ${calendar}:`, error);
+    }
+  },
+
+  sendInvite: async (invite) => {
+    try {
+      const response = await $api.post('/invitation', invite);
+      const data = await response.data;
+
+    } catch (error) {
+      console.error('Error sending invite:', error);
+    }
+  },
+
+  fetchIncomingInvites: async () => {
+    try {
+      const response = await $api.get('/invitation/user-ingoing');
+      const data = await response.data;
+
+      set({ invites: data });
+    } catch (error) {
+      console.error('Error fetching calendars:', error);
     }
   },
 

@@ -7,11 +7,11 @@ class InvitationController {
     async create(req, res, next) {
         try {
             const userId = req.user.id;
-            const { invitedUserId, calendarId, permissionId } = req.body;
+            const { invitedUserEmail, calendarId, permissionId } = req.body;
 
             await calendarService.checkPermissions(userId, calendarId);
-            const event = await invitationService.create(userId, invitedUserId, permissionId, calendarId);
-            res.json(event);
+            const invite = await invitationService.create(userId, invitedUserEmail, permissionId, calendarId);
+            res.json(invite);
         } catch (e) {
             next(e);
         }
@@ -44,7 +44,7 @@ class InvitationController {
         try {
             const userId = req.user.id;
 
-            invitations = await invitationService.getIngoingInvitation(userId);
+            const invitations = await invitationService.getIngoingInvitation(userId);
             res.json(invitations);
         } catch (e) {
             next(e);
@@ -55,7 +55,7 @@ class InvitationController {
         try {
             const userId = req.user.id;
 
-            invitations = await invitationService.getOutgoingInvitation(userId);
+            const invitations = await invitationService.getOutgoingInvitation(userId);
             res.json(invitations);
         } catch (e) {
             next(e);

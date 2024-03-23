@@ -1,17 +1,46 @@
 const CalendarDto = require('../dtos/CalendatDto');
 const Calendar = require('../models/Calendar');
 const Invitation = require('../models/Invitation');
+const User = require('../models/User');
 const UserCalendar = require('../models/UserCalendar');
 
 class InvitationService {
 
     async getIngoingInvitation(userId) {
-        const invitations = await Invitation.findAll({
-            where: {
-                invited_user_id: userId
+        try {
+            const invitations = await Invitation.findAll({  
+                where: {
+                    invited_user_id: userId
+                }
+            });
+
+            const processedInvitations = [];
+    
+            for (const invitation of invitations) {
+
+                const inviter = await User.findOne({
+                    where: { id: invitation.inviter_user_id },
+                    attributes: ['profile_image', 'login']
+                });
+    
+                const calendar = await Calendar.findOne({
+                    where: { id: invitation.calendar_id },
+                    attributes: ['name']
+                });
+
+                processedInvitations.push({
+                    invitationId: invitation.id,
+                    inviterAvatar: inviter ? inviter.profile_image : null,
+                    inviterLogin: inviter ? inviter.login : null,
+                    calendarName: calendar ? calendar.name : null
+                });
             }
-        });
-        return invitations;
+    
+            return processedInvitations;
+        } catch (error) {
+            console.error('Error retrieving ingoing invitations:', error);
+            throw error;
+        }
     }
 
     async getOutgoingInvitation(userId) {
@@ -23,10 +52,11 @@ class InvitationService {
         return invitations;
     }
 
-    async create(inviterUserId, invitedUserId, permissionId, calendarId) {
+    async create(inviterUserId, invitedUserEmail, permissionId, calendarId) {
+        const user = await User.findOne({where: {email: invitedUserEmail}})
         const newInvitation = await Invitation.create({
             inviter_user_id: inviterUserId,
-            invited_user_id: invitedUserId,
+            invited_user_id: user.id,
             permission_id: permissionId,
             calendar_id: calendarId
         });

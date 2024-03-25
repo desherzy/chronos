@@ -129,7 +129,7 @@ class UserService {
             throw ApiError.badRequest('User not found'); 
           }
           if (photoPath) {
-            user.profileImage = photoPath;
+            user.profile_image = photoPath;
           }
 
           await user.save();

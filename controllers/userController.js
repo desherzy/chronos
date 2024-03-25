@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const {validationResult} = require('express-validator');
 const ApiError = require('../exceptions/apiError');
+const util = require('util');
 
 class UserController {
     async getUser(req, res, next) {
@@ -69,6 +70,7 @@ class UserController {
             const filePath = path.join(uploadDir, fileName);
             await photo.mv(filePath);
             const imageUrl = `${process.env.API_URL}/usersAvatars/${fileName}`;
+            console.log(imageUrl)
             const updatedUser = await userService.uploadUserPhoto(userId, imageUrl);
             res.json(updatedUser);
         } catch (e) {

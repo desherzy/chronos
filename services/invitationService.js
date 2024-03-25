@@ -10,7 +10,8 @@ class InvitationService {
         try {
             const invitations = await Invitation.findAll({  
                 where: {
-                    invited_user_id: userId
+                    invited_user_id: userId,
+                    accepted: null
                 }
             });
 
@@ -54,6 +55,9 @@ class InvitationService {
 
     async create(inviterUserId, invitedUserEmail, permissionId, calendarId) {
         const user = await User.findOne({where: {email: invitedUserEmail}})
+        if(!user) {
+            throw ApiError.badRequest('Invited user is not found');
+        }
         const newInvitation = await Invitation.create({
             inviter_user_id: inviterUserId,
             invited_user_id: user.id,

@@ -10,7 +10,7 @@ router.post('/register',
     body('password').isLength({min: 4, max: 25}), 
     authController.registration);
 router.post('/login', authController.login);
-router.post('/logout', authMiddleware, authController.logout); //here with authMiddleware, because we want to get user.sessionId to delete session
+router.post('/logout', authMiddleware, authController.logout);
 router.post('/password-reset', 
     body('email').isEmail(), 
     authController.passwordResetEmailSend);

@@ -1,8 +1,30 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import {  Card, CardHeader, CardBody, CardFooter, Avatar, AvatarBadge, Heading, Button, FormLabel, Switch, Input  } from "@chakra-ui/react";
 import '../styles/tailwind.css';
+import useAuthStore from '../store/auth';
 
 function ProfileSettings() {
+  const [selectedFile, setSelectedFile] = useState(null);
+  const fileInputRef = useRef(null);
+  const { uploadAvatar, user } = useAuthStore();
+
+
+  const handleAvatarClick = () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = (event) => {
+      const file = event.target.files[0];
+      setSelectedFile(file);
+    };
+    input.click();
+  };
+
+  const handleUploadAvatar = () => {
+    if (selectedFile) {
+        uploadAvatar(selectedFile);
+    }
+  };
 
     return (
       <Card className="max-w-lg mx-auto p-6">
@@ -11,14 +33,11 @@ function ProfileSettings() {
         </CardHeader>
         <CardBody className="space-y-6">
           <div className="flex items-center space-x-4">
-            <Avatar>
-              <AvatarBadge
-                src="https://source.unsplash.com/random/128x128?person"
-                alt="User avatar"
-              />
+            <Avatar size='lg' src={user.profileImage}
+            onClick={handleAvatarClick}>
             </Avatar>
             <div className="flex-1">
-              <Button variant="outline" className="text-sm">Change Avatar</Button>
+              <Button onClick={handleUploadAvatar} variant="outline" className="text-sm">Change Avatar</Button>
             </div>
           </div>
           <div className="space-y-4">

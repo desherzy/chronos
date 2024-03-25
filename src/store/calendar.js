@@ -116,6 +116,33 @@ const useCalendarStore = create((set, get) => ({
     }
   },
 
+  
+  acceptInvitation: async (invitationId) => {
+    try {
+      const response = await $api.post('/invitation/accept', { invitationId });
+      const data = await response.data;
+
+      set((state) => ({
+        invites: state.invites.filter((invite) => invite.invitationId !== parseInt(invitationId))
+      }));
+    } catch (error) {
+      console.error('Error while accepting the invite:', error);
+    }
+  },
+
+  declineInvitation: async (invitationId) => {
+    try {
+      const response = await $api.post('/invitation/decline', { invitationId });
+      const data = await response.data;
+
+      set((state) => ({
+        invites: state.invites.filter((invite) => invite.invitationId !== parseInt(invitationId))
+      }));
+    } catch (error) {
+      console.error('Error while declining the invite:', error);
+    }
+  },
+
   getCalendarById: (calendarId) => {
     const { calendars } = set.getState();
     return calendars.find(calendar => calendar.id === calendarId);

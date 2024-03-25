@@ -5,7 +5,7 @@ import useCalendarStore from '../store/calendar';
 
 
 function Invitations() {
-  const { invites, fetchIncomingInvites } = useCalendarStore();
+  const { invites, fetchIncomingInvites, acceptInvitation, declineInvitation } = useCalendarStore();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -13,6 +13,22 @@ function Invitations() {
     };
     fetchData();
 }, [fetchIncomingInvites]);
+
+  const accept = async (invitationId) => {
+    try {
+      await acceptInvitation(invitationId);
+    } catch (error) {
+      console.error('Error while accepting invitation:', error);
+    }
+  };
+
+  const decline = async (invitationId) => {
+    try {
+      await declineInvitation(invitationId);
+    } catch (error) {
+      console.error('Error while declining invitation:', error);
+    }
+  };
   
     return (
         <Card className="ml-[68px]">
@@ -42,8 +58,8 @@ function Invitations() {
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Button>Accept</Button>
-                    <Button variant="outline">Deny</Button>
+                    <Button onClick={() => accept(invitation.invitationId)}>Accept</Button>
+                    <Button onClick={() => decline(invitation.invitationId)} variant="outline">Deny</Button>
                   </div>
                 </div>
               ))}

@@ -141,7 +141,6 @@ function Calendar() {
                 <ModalContent>
                     <ModalHeader>Event Information</ModalHeader>
                     <ModalBody>
-                      <p>iD: {selectedEvent?.id}</p>
                       <p>Title: {selectedEvent?.title}</p>
                       <p>Description: {selectedEvent?.extendedProps?.description}</p>
                       <p>Category: {selectedEvent?.extendedProps?.category}</p>

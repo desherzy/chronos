@@ -75,6 +75,30 @@ const useAuthStore = create(devtools((set) => ({
           set({ isAuthenticated: false, user: null, error });
         }
       },
+
+      uploadAvatar: async (file) => {
+        try {
+          const formData = new FormData();
+          formData.append('photo', file);
+    
+          const response = await $api.patch('/users/avatar', formData);
+    
+          if (response.ok) {
+            const { profileImage } = await response.json();
+            set((state) => ({
+              ...state,
+              user: {
+                ...state.user,
+                profileImage: profileImage,
+              },
+            }));
+          } else {
+            console.error('Error uploading avatar:', response.statusText);
+          }
+        } catch (error) {
+          console.error('Error uploading avatar:', error);
+        }
+      },
   })));
   
 

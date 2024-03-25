@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, FormControl, FormLabel, Input, Textarea, Select } from "@chakra-ui/react";
+import { Modal, ModalOverlay, ColorPicker , ModalContent, ModalHeader, ModalBody, ModalFooter, Button, FormControl, FormLabel, Input, Textarea, Select, ColorModeProvider } from "@chakra-ui/react";
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -20,6 +20,10 @@ function Calendar() {
     const { calendarId } = useParams();
     const events = useCalendarStore((state) => state.events[calendarId] || []);
 
+    const handleColorChange = (event) => {
+        const newColor = event.target.value;
+        setEventColor(newColor);
+      };
 
     function handleDateSelect(selectInfo) {
         setSelectedEvent({
@@ -49,7 +53,7 @@ function Calendar() {
         const newEvent = {
             title: eventName,
             description: eventDescription,
-            category: "1",
+            category: eventCategory,
             backgroundColor: eventColor,
             start: selectedEvent.start,
             end: selectedEvent.end,
@@ -111,20 +115,20 @@ function Calendar() {
                             <Select value={eventCategory} onChange={(e) => setEventCategory(e.target.value)}>
                                 <option value="reminder">Reminder</option>
                                 <option value="task">Task</option>
-                                <option value="arrangement">Arrangement</option>
+                                <option value="arrangment">Arrangement</option>
                             </Select>
                         </FormControl>
                         <FormControl mt={4}>
                             <FormLabel>Color</FormLabel>
-                            <Select value={eventColor} onChange={(e) => setEventColor(e.target.value)}>
-                                <option value="red">Red</option>
-                                <option value="blue">Blue</option>
-                                <option value="green">Green</option>
-                           
-                            </Select>
-                        </FormControl>
-                        <p>Start: {selectedEvent?.start}</p>
-                        <p>End: {selectedEvent?.end}</p>
+                            <Input
+                                type="color"
+                                value={eventColor}
+                                onChange={handleColorChange}
+                                width="100%"
+                            />
+                            </FormControl>
+                            <p>Start: {new Date(selectedEvent?.start).toLocaleDateString()}, {new Date(selectedEvent?.start).toLocaleTimeString()}</p>
+                            <p>End: {new Date(selectedEvent?.end).toLocaleDateString()}, {new Date(selectedEvent?.end).toLocaleTimeString()}</p>
                     </ModalBody>
                     <ModalFooter>
                         <Button colorScheme="blue" mr={3} onClick={handleCreateEvent}>
@@ -144,7 +148,6 @@ function Calendar() {
                       <p>Title: {selectedEvent?.title}</p>
                       <p>Description: {selectedEvent?.extendedProps?.description}</p>
                       <p>Category: {selectedEvent?.extendedProps?.category}</p>
-                      <p>Color: {selectedEvent?.backgroundColor}</p>
                       <p>Start: {selectedEvent?.start?.toLocaleString()}</p>
                       <p>End: {selectedEvent?.end?.toLocaleString()}</p>
                     </ModalBody>

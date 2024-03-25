@@ -13,6 +13,12 @@ function CreateEventModal({isOpen, onClose}) {
     const { calendarId } = useParams();
     const { createEvent } = useCalendarStore();
 
+    
+    const handleColorChange = (event) => {
+        const newColor = event.target.value;
+        setEventColor(newColor);
+      };
+
 
     const handleSave = async () => {
         const newEvent = {
@@ -65,12 +71,13 @@ function CreateEventModal({isOpen, onClose}) {
                 </FormControl>
                 <FormControl mt={4}>
                     <FormLabel>Color</FormLabel>
-                    <Select value={eventColor} onChange={(e) => setEventColor(e.target.value)}>
-                        <option value="red">Red</option>
-                        <option value="blue">Blue</option>
-                        <option value="green">Green</option>
-                    </Select>
-                </FormControl>
+                    <Input
+                        type="color"
+                        value={eventColor}
+                        onChange={handleColorChange}
+                        width="100%"
+                    />
+                    </FormControl>
                 <FormControl mt={4}>
                         <FormLabel>Start</FormLabel>
                         <Input type="datetime-local" value={start} onChange={(e) => setStart(e.target.value)} />

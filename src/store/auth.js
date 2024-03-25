@@ -83,18 +83,51 @@ const useAuthStore = create(devtools((set) => ({
     
           const response = await $api.patch('/users/avatar', formData);
     
-          if (response.ok) {
-            const { profileImage } = await response.json();
-            set((state) => ({
-              ...state,
-              user: {
-                ...state.user,
-                profileImage: profileImage,
-              },
-            }));
-          } else {
-            console.error('Error uploading avatar:', response.statusText);
-          }
+          const { profileImage } = response.data;
+          set((state) => ({
+            ...state,
+            user: {
+              ...state.user,
+              profileImage: profileImage,
+            },
+          }));
+  
+        } catch (error) {
+          console.error('Error uploading avatar:', error);
+        }
+      },
+      
+      updateUser: async (updated) => {
+        try {
+          const response = await $api.patch('/users/update', { login: updated });
+    
+          const { login } = response.data;
+          set((state) => ({
+            ...state,
+            user: {
+              ...state.user,
+              login: login,
+            },
+          }));
+  
+        } catch (error) {
+          console.error('Error uploading avatar:', error);
+        }
+      },
+
+      toogleNotifications: async (newValue) => {
+        try {
+         const response = await $api.post('/users/notification', { notifications: newValue });
+    
+          const { notifications } = response.data;
+          set((state) => ({
+            ...state,
+            user: {
+              ...state.user,
+              notifications: notifications,
+            },
+          }));
+  
         } catch (error) {
           console.error('Error uploading avatar:', error);
         }

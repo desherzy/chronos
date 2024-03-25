@@ -24,6 +24,11 @@ const User = sequelize.define('User', {
         defaultValue: false,
         allowNull: false
     },
+    notifications: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+        allowNull: false
+    },
     profile_image: {
         type: DataTypes.STRING
     },

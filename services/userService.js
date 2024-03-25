@@ -178,6 +178,19 @@ class UserService {
         throw error;
       }
     }
-}
 
+    async toogleNotifications(userId, notificationValue) {
+      const user = await User.findOne({where: {id: userId}});
+        
+      if (!user) {
+        throw ApiError.badRequest('User not found'); 
+      }
+
+      user.notifications = notificationValue;
+      await user.save();
+      return { notifications: notificationValue };
+    }
+
+
+  }
 module.exports = new UserService();

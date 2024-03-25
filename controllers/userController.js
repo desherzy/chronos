@@ -108,6 +108,16 @@ class UserController {
             next(e);
         }
     }
+    async toogleNotification(req, res, next) {
+        try {
+            const userId = req.user.id;
+            const { notifications } = req.body;
+            const newNotification = await userService.toogleNotifications(userId, notifications);
+            res.json(newNotification);
+        } catch(e) {
+            next(e);
+        }
+    }
 }
 
 module.exports = new UserController();

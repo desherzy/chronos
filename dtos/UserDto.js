@@ -5,6 +5,7 @@ module.exports = class UserDto {
     profileImage;
     sessionId;
     emailConfirmed;
+    notifications;
 
     constructor(model, sessionId) {
         this.id = model.id;
@@ -12,6 +13,7 @@ module.exports = class UserDto {
         this.email = model.email;
         this.profileImage = model.profile_image;
         this.sessionId = sessionId;
+        this.notifications = model.notifications;
         this.emailConfirmed = model.email_confirmed;
     }
 }

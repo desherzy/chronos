@@ -2,6 +2,10 @@ const CalendarEvent = require('../models/CalendarEvent');
 const EventDto = require('../dtos/EventDto');
 const Event = require('../models/Event');
 const UserEvent = require('../models/UserEvent');
+const UserCalendar = require('../models/UserCalendar');
+const mailService = require('./mailService');
+const { Op } = require('sequelize');
+const User = require('../models/User');
 
 class EventService {
 
@@ -76,6 +80,46 @@ class EventService {
 
         await Event.destroy({ where: { id: eventId } });
     }
+
+    async checkEventsAndSendReminders() {
+        try {
+          const today = new Date();
+          today.setUTCHours(0, 0, 0, 0); 
+      
+          const users = await User.findAll({
+            where: { notifications: true }
+          });
+      
+          for (const user of users) {
+            const userCalendars = await UserCalendar.findAll({
+              where: { user_id: user.id }
+            });
+      
+            for (const userCalendar of userCalendars) {
+              const calendarEvents = await CalendarEvent.findAll({
+                where: 
+                { calendar_id: userCalendar.calendar_id
+                }
+              });
+      
+              for (const calendarEvent of calendarEvents) {
+                const event = await Event.findOne({ where: {
+                  id: calendarEvent.event_id,
+                  start_time: { 
+                    [Op.between]: [today, new Date(today.getTime() + 24 * 60 * 60 * 1000)]
+                  }}
+                });
+                if (event) {
+                  await mailService.sendNotification(user.email, event);
+                }
+              }
+            }
+          }
+      
+        } catch (error) {
+            console.error('\n\nError during cheking and sending notifications: ', error);
+        }
+      }
 
 }
 

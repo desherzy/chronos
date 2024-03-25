@@ -3,6 +3,7 @@ const { sequelize } = require('../dbConfig');
 const Calendar = require('./Calendar');
 const User = require('./User');
 const Permission = require('./Permission');
+const CalendarEvent = require('./CalendarEvent');
 
 const UserCalendar = sequelize.define('UserCalendar', {
     user_id: {

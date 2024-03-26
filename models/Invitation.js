@@ -40,7 +40,7 @@ const Invitation = sequelize.define('Invitation', {
     },
     accepted: {
         type: DataTypes.BOOLEAN,
-        defaultValue: false
+        defaultValue: null
     }
 }, {
     tableName: 'invitations',

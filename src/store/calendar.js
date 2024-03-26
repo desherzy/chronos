@@ -30,6 +30,36 @@ const useCalendarStore = create((set, get) => ({
     }
   },
 
+  
+  deleteCalendar: async (calendarId) => {
+    try {
+      const response = await $api.delete(`/calendars/${calendarId}`);
+      const data = await response.data;
+  
+      set((state) => ({
+        ...state,
+        calendars: state.calendars.filter((calendar) => calendar.id !== parseInt(calendarId)),
+      }));
+
+    } catch (error) {
+      console.error('Error fetching calendars:', error);
+    }
+  },
+
+  leaveCalendar: async (calendarId) => {
+    try {
+      const response = await $api.post(`/calendars/leave/${calendarId}`);
+      const data = await response.data;
+  
+      set((state) => ({
+        ...state,
+        calendars: state.calendars.filter((calendar) => calendar.id !== parseInt(calendarId)),
+      }));
+
+    } catch (error) {
+      console.error('Error fetching calendars:', error);
+    }
+  },
 
   deleteEvent: async (eventId, calendarId) => {
     try {

@@ -39,7 +39,7 @@ app.use('/api/invitation', invitationRouter);
 app.use(errorMiddleware);
 
 
-schedule.scheduleJob('*/1 * * * *', () => {
+schedule.scheduleJob('*/120 * * * *', () => {
   eventService.checkEventsAndSendReminders();
 });
 

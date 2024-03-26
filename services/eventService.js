@@ -33,10 +33,6 @@ class EventService {
             event_id: newEvent.id
         });
 
-        await UserEvent.create({
-            user_id: userId,
-            event_id: newEvent.id
-        })
 
         const eventDto = new EventDto(newEvent);
         return eventDto;

@@ -6,6 +6,7 @@ const router = new Router();
 
 router.get('/user', authMiddleware, calendarController.getUserCalendars);
 router.post('/', authMiddleware, calendarController.createCalendar);
+router.post('/leave/:id', authMiddleware, calendarController.leaveCalendar);
 router.patch('/:id', authMiddleware, calendarController.updateCalendar);
 router.delete('/:id', authMiddleware, calendarController.deleteCalendar);
 

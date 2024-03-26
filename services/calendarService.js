@@ -92,6 +92,35 @@ class CalendarService {
         } catch (error) {
             throw error;
         }
+    }
+
+    async leaveCalendar(userId, calendarId) {
+        try {
+            const calendar = await Calendar.findByPk(calendarId);
+            if (!calendar) {
+                throw ApiError.badRequest('Calendar not found');
+            }
+
+            const userCalendar = await UserCalendar.findOne({
+                where: {
+                    user_id: userId,
+                    calendar_id: calendarId
+                }
+            });
+    
+            if (!userCalendar) {
+                throw ApiError.badRequest('User is not a member of this calendar');
+            }
+
+            if (userCalendar.permission_id === 1) {
+                throw ApiError.badRequest('Creator can destroy the calendar, but not leave');
+            }
+
+            await userCalendar.destroy();
+            
+        } catch (error) {
+            throw error;
+        }
     }   
 
 }

@@ -54,6 +54,18 @@ class CalendarController {
         }
     }
 
+    async leaveCalendar(req, res, next) {
+        try {
+            const userId = req.user.id;
+            const calendarId = req.params.id;
+
+            await calendarService.leaveCalendar(userId, calendarId);
+            res.status(200).json({ message: 'You have successfully left the calendar' });
+        } catch (e) {
+            next(e);
+        }
+    }
+
 
 
 }

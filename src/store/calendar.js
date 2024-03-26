@@ -17,6 +17,20 @@ const useCalendarStore = create((set, get) => ({
     }
   },
 
+  createCalendar: async ({ name, description, color }) => {
+    try {
+      const response = await $api.post('/calendars', { name, description, color });
+      const data = await response.data;
+
+
+    set((state) => ({ ...state, calendars: [...state.calendars, data] }));
+  
+    } catch (error) {
+      console.error('Error fetching calendars:', error);
+    }
+  },
+
+
   deleteEvent: async (eventId, calendarId) => {
     try {
       const response = await $api.delete(`/events/${eventId}`, {

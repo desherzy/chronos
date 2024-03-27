@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAuthStore from '../store/auth';
+import { Link as ReactRouterLink } from 'react-router-dom';
+import { Link as ChakraLink } from '@chakra-ui/react'
+import { Center, VStack, Box, Heading, FormControl, FormLabel, Input, Button } from '@chakra-ui/react';
 
 function Login() {
     const navigate = useNavigate();
@@ -37,15 +40,33 @@ function Login() {
     }};
 
     return (
-    <div>
-        <h2>Login</h2>
-        <form onSubmit={handleSubmit}>
-            <input type="text" name="email" value={formData.email} onChange={handleChange} placeholder="Email" />
-            <input type="password" name="password" value={formData.password} onChange={handleChange} placeholder="Password" />
-            <button type="submit">Log in</button>
-        </form>
-        {error && <p>{error.message || 'Login failed'}</p>}
-    </div>
+        <Center h="100vh">
+            <Box borderWidth='1px' borderRadius='lg' p={8} backgroundColor='#E2E8F0'>
+                <Heading textAlign='center' mb={4} >Login</Heading>
+                <form onSubmit={handleSubmit}>
+                    <VStack spacing={4} align="stretch">
+                        <FormControl id="email">
+                            <FormLabel>Email address</FormLabel>
+                            <Input type="text" name="email" value={formData.email} onChange={handleChange} placeholder="Email" />
+                        </FormControl>
+                        <FormControl id="password">
+                            <FormLabel>Password</FormLabel>
+                            <Input type="password" name="password" value={formData.password} onChange={handleChange} placeholder="Password" />
+                        </FormControl>
+                        <Button colorScheme="purple" type="submit">
+                            Login
+                        </Button>
+                    </VStack>
+                </form>
+                <Center h="10vh">
+                    <Box>
+                        <ChakraLink as={ReactRouterLink} to='/registration'>
+                            Don't have an account? Register here.
+                        </ChakraLink>
+                    </Box>
+                </Center>
+            </Box>
+        </Center>
     );
 }
 

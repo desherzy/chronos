@@ -4,10 +4,10 @@ import useAuthStore from './store/auth';
 import Registration from './components/Registration';
 import Login from './components/Login';
 import MainPage from './components/MainPage';
-import { Route, BrowserRouter, Routes, Navigate } from 'react-router-dom';
+import { Route, BrowserRouter, Routes, Navigate, Link as RouterLink } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import PrivateRoute from './components/PrivateRoute';
-import { ChakraProvider } from '@chakra-ui/react'
+import { ChakraProvider, Center, Box, Button, Flex, Spinner } from '@chakra-ui/react'
 import Sidebar from './components/Sidebar';
 import ProfileSettings from './components/ProfileSettings';
 import Invitations from './components/Invitations';
@@ -17,6 +17,7 @@ import CalendarPage from './components/CalendarPage';
 function App() {
   const { isAuthenticated, emailConfirmed, refreshUser } = useAuthStore();
   const [isCheckingAuth, setCheckingAuth] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -32,17 +33,32 @@ function App() {
     };
     console.log("CHECKIN AUTH");
     checkAuth();
+
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000); // 2 seconds
+
+    return () => clearTimeout(timer);
   }, [refreshUser]);
 
   if (isCheckingAuth) {
-    return <div>Loading...</div>;
+    return (
+      <Flex h="100vh" align="center" justify="center">
+        {isLoading ? <Spinner size="xl" color="purpule" /> : <h1>Loading complete!</h1>}
+      </Flex>
+    );
   }
 
   if (!emailConfirmed && isAuthenticated) {
     return (
-      <div>
-        Please confirm your email to access the application.
-      </div>
+      <Center h="100vh">
+        <Box textAlign="center">
+          <p>Please confirm your email to access the application.</p>
+          <Button mt={4} colorScheme="purple">
+            <RouterLink to="/login">Login</RouterLink>
+          </Button>
+        </Box>
+      </Center>
     );
   }
 

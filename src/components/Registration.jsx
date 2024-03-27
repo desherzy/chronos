@@ -3,12 +3,13 @@ import useAuthStore from '../store/auth';
 import { useNavigate } from 'react-router-dom';
 import { Link as ReactRouterLink } from 'react-router-dom';
 import { Link as ChakraLink } from '@chakra-ui/react'
-import { Center, VStack, Box, Heading, FormControl, FormLabel, Input, Button } from '@chakra-ui/react';
+import { Center, VStack, Box, Alert, AlertIcon, Heading, FormControl, FormLabel, Input, Button } from '@chakra-ui/react';
 
 function Registration() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ login: '',  email: '', password: '' });
   const { registerUser, error, isAuthenticated } = useAuthStore();
+  const [showAlert, setShowAlert] = useState(false);
 
   useEffect(() => {
     if (isAuthenticated === true) {
@@ -31,29 +32,39 @@ function Registration() {
     }
   };
 
+  const handleCreateAccount = () => {
+    setShowAlert(true);
+  };
+
   return (
     <Center h="100vh">
-      <Box borderWidth='1px' borderRadius='lg' p={8} backgroundColor='#E2E8F0'>
-            <Heading textAlign='center' mb={4} >Register</Heading>
-            <form onSubmit={handleSubmit}>
-                <VStack spacing={4} align="stretch">
-                    <FormControl id="login">
-                        <FormLabel>Login</FormLabel>
-                        <Input type="text" name="login" value={formData.login} onChange={handleChange} placeholder="Login" />
-                    </FormControl>
-                    <FormControl id="email">
-                        <FormLabel>Email address</FormLabel>
-                        <Input type="text" name="email" value={formData.email} onChange={handleChange} placeholder="Email" />
-                    </FormControl>
-                    <FormControl id="password">
-                        <FormLabel>Password</FormLabel>
-                        <Input type="password" name="password" value={formData.password} onChange={handleChange} placeholder="Password" />
-                    </FormControl>
-                    <Button colorScheme="purple" type="submit">
-                        Login
-                    </Button>
-                </VStack>
-            </form>
+      <Box maxW='sm' borderWidth='1px' borderRadius='lg' p={8} backgroundColor='#E2E8F0'>
+        <Heading textAlign='center' mb={4} >Register</Heading>
+          <form onSubmit={handleSubmit}>
+              <VStack spacing={4} align="stretch">
+                  <FormControl id="login">
+                      <FormLabel>Login</FormLabel>
+                      <Input type="text" name="login" value={formData.login} onChange={handleChange} placeholder="Login" />
+                  </FormControl>
+                  <FormControl id="email">
+                      <FormLabel>Email address</FormLabel>
+                      <Input type="text" name="email" value={formData.email} onChange={handleChange} placeholder="Email" />
+                  </FormControl>
+                  <FormControl id="password">
+                      <FormLabel>Password</FormLabel>
+                      <Input type="password" name="password" value={formData.password} onChange={handleChange} placeholder="Password" />
+                  </FormControl>
+                  {showAlert && (
+                    <Alert status="info" mb={4} borderWidth='1px' borderRadius='lg'>
+                      <AlertIcon />
+                      Please confirm your email to access the application.
+                    </Alert>
+                  )}
+                  <Button colorScheme="purple" type="submit" onClick={handleCreateAccount}>
+                      Create an account
+                  </Button>
+              </VStack>
+          </form>
             <Center h="10vh">
                 <Box>
                     <ChakraLink as={ReactRouterLink} to='/login'>

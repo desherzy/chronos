@@ -3,13 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import useAuthStore from '../store/auth';
 import { Link as ReactRouterLink } from 'react-router-dom';
 import { Link as ChakraLink } from '@chakra-ui/react'
-import { Center, VStack, Box, Heading, FormControl, FormLabel, Input, Button } from '@chakra-ui/react';
+import { Center, Alert, AlertIcon, VStack, Box, Heading, FormControl, FormLabel, Input, Button } from '@chakra-ui/react';
 
 function Login() {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({ email: '', password: '' });
     const { loginUser, isAuthenticated, error } = useAuthStore();
     const [loginSuccess, setLoginSuccess] = useState(false);
+    const [showAlert, setShowAlert] = useState(false);
 
     useEffect(() => {
     if (isAuthenticated === true) {
@@ -37,6 +38,7 @@ function Login() {
         setLoginSuccess(true);
     } catch (error) {
         console.error('Error logging in:', error);
+        setShowAlert(true);
     }};
 
     return (
@@ -53,6 +55,12 @@ function Login() {
                             <FormLabel>Password</FormLabel>
                             <Input type="password" name="password" value={formData.password} onChange={handleChange} placeholder="Password" />
                         </FormControl>
+                        {showAlert && (
+                            <Alert status="error" mb={4} borderWidth='1px' borderRadius='lg'>
+                                <AlertIcon />
+                                {error.message || 'Login failed'}
+                            </Alert>
+                        )}
                         <Button colorScheme="purple" type="submit">
                             Login
                         </Button>

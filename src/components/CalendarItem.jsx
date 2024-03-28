@@ -8,7 +8,6 @@ import useCalendarStore from '../store/calendar';
 function CalendarItem({ calendar }) {     
     const navigate = useNavigate();  
     const { deleteCalendar, leaveCalendar } = useCalendarStore();
-   // const [deleteView, setDeleteView] = useState(true);
    const shouldRenderDeleteButton = calendar.name !== "Main" || calendar.description !== "Default calendar";
     
     const handleVisitClick = () => {

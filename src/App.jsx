@@ -69,7 +69,7 @@ function App() {
         <Routes>
           <Route path='/registration' element={<Registration />} />
           <Route path='/login' element={<Login />} />
-          <Route path='/' element={<Login />} />
+          <Route path='/' element={<MainPage />} />
           <Route path='/settings' element={<PrivateRoute> <ProfileSettings /> </PrivateRoute>} />
           <Route path='/invitations' element={<PrivateRoute> <Invitations /> </PrivateRoute>} />
           <Route path="/calendars" element={<PrivateRoute> <CalendarList/> </PrivateRoute>} />

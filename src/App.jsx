@@ -7,7 +7,7 @@ import MainPage from './components/MainPage';
 import { Route, BrowserRouter, Routes, Navigate, Link as RouterLink } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import PrivateRoute from './components/PrivateRoute';
-import { ChakraProvider, Center, Box, Button, Flex, Spinner } from '@chakra-ui/react'
+import { ChakraProvider, Center, Box, Button, Flex, Spinner, Alert, AlertIcon } from '@chakra-ui/react'
 import Sidebar from './components/Sidebar';
 import ProfileSettings from './components/ProfileSettings';
 import Invitations from './components/Invitations';
@@ -53,14 +53,15 @@ function App() {
     return (
       <Center h="100vh">
         <Box textAlign="center">
-          <p>Please confirm your email to access the application.</p>
-          <Button mt={4} colorScheme="purple">
-            <RouterLink to="/login">Login</RouterLink>
-          </Button>
+          <Alert status="info" mb={4} borderWidth='1px' borderRadius='lg'>
+              <AlertIcon width={"2vw"} marginRight={"5px"}/>
+                Please confirm your email to access the application.
+          </Alert>
         </Box>
       </Center>
     );
   }
+
 
   return (
     <ChakraProvider>

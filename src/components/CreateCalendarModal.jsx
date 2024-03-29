@@ -74,10 +74,10 @@ function CreateCalendarModal({ isOpen, onClose }) {
             </FormControl>
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} ref={finalRef} onClick={onClose}>
+            <Button bgColor="#d8d8d8" mr={3} ref={finalRef} onClick={onClose}>
               Cancel
             </Button>
-            <Button onClick={handleCalendar} colorScheme="green">
+            <Button onClick={handleCalendar} bgColor="#a5ffbd">
               Create
             </Button>
           </ModalFooter>

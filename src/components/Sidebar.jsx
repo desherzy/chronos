@@ -14,7 +14,7 @@ function Sidebar() {
         }
       };
   return (
-    <div className="fixed left-0 top-0 h-full flex flex-col justify-start items-center px-1 max-w-[68px] bg-white border border-solid border-zinc-400">
+    <div className="z-10 fixed left-0 top-0 h-full flex flex-col justify-start items-center px-1 max-w-[68px] bg-white border border-solid border-zinc-400">
       <div className="flex flex-col items-center pt-2 pb-6">
 
         <img

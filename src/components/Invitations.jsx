@@ -45,8 +45,7 @@ function Invitations() {
                   className="flex items-center justify-between bg-primary/10 p-4 rounded-lg bg-white"
                 >
                   <div className="flex items-center space-x-4">
-                    <Avatar>
-                      <AvatarBadge src={invitation.inviterAvatar} />
+                    <Avatar src={invitation.inviterAvatar}>
                     </Avatar>
                     <div>
                       <p className="text-sm font-medium leading-none">

@@ -9,13 +9,11 @@ function Registration() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ login: '',  email: '', password: '' });
   const { registerUser, error, isAuthenticated } = useAuthStore();
-  const [showAlert, setShowAlert] = useState(false);
 
   useEffect(() => {
     if (isAuthenticated === true) {
         navigate("/calendars", {replace: true});
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isAuthenticated]);
 
   const handleChange = (e) => {
@@ -32,9 +30,6 @@ function Registration() {
     }
   };
 
-  const handleCreateAccount = () => {
-    setShowAlert(true);
-  };
 
   return (
     <Center h="100vh">
@@ -54,13 +49,7 @@ function Registration() {
                       <FormLabel>Password</FormLabel>
                       <Input type="password" name="password" value={formData.password} onChange={handleChange} placeholder="Password" />
                   </FormControl>
-                  {showAlert && (
-                    <Alert status="info" mb={4} borderWidth='1px' borderRadius='lg'>
-                      <AlertIcon />
-                      Please confirm your email to access the application.
-                    </Alert>
-                  )}
-                  <Button colorScheme="purple" type="submit" onClick={handleCreateAccount}>
+                  <Button colorScheme="purple" type="submit">
                       Create an account
                   </Button>
               </VStack>

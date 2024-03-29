@@ -42,41 +42,63 @@ function ProfileSettings() {
   };
 
     return (
-      <Card className="max-w-lg mx-auto p-6">
+      <Card className="max-w-lg mx-auto p-6 mt-12 relative z-1">
         <CardHeader className="mb-4">
-          <Heading  className="text-2xl font-bold">Profile Settings</Heading >
+          <Heading className="text-2xl font-bold">Profile Settings</Heading>
         </CardHeader>
- 
+
         <CardBody className="space-y-6">
-            <Badge ml='1' colorScheme='purple' fontSize='1.2em'>{user.login}</Badge>
-    
+          <Badge ml="1" colorScheme="purple" fontSize="1.2em">
+            {user.login}
+          </Badge>
+
           <div className="flex items-center space-x-4">
-            <Avatar size='lg' src={user.profileImage}
-            onClick={handleAvatarClick}>
-            </Avatar>
-            
+            <Avatar
+              size="lg"
+              src={user.profileImage}
+              onClick={handleAvatarClick}
+            ></Avatar>
+
             <div className="flex-1">
-              <Button onClick={handleUploadAvatar} variant="outline" className="text-sm">Change Avatar</Button>
+              <Button onClick={handleUploadAvatar} variant="outline" className="text-sm">
+                Change Avatar
+              </Button>
             </div>
           </div>
 
           <div className="space-y-4">
             <div className="flex items-center">
-              <FormLabel htmlFor="login" className="w-1/4">New login</FormLabel>
-              <Input id="login" value={newLogin} onChange={handleLoginChange} className="w-3/4" placeholder="Enter your login" />
+              <FormLabel htmlFor="login" className="w-1/4">
+                New login
+              </FormLabel>
+              <Input
+                id="login"
+                value={newLogin}
+                onChange={handleLoginChange}
+                className="w-3/4"
+                placeholder="Enter your login"
+              />
             </div>
             <div className="flex items-center justify-between">
-              <FormLabel htmlFor="email-notifications" className="flex-grow">Email Notifications</FormLabel>
-              <Switch  id="email-notifications"
+              <FormLabel htmlFor="email-notifications" className="flex-grow">
+                Email Notifications
+              </FormLabel>
+              <Switch
+                id="email-notifications"
                 isChecked={user.notifications}
-                onChange={handleToggleNotifications} />
+                onChange={handleToggleNotifications}
+              />
             </div>
           </div>
         </CardBody>
         <CardFooter className="flex flex-col space-y-4">
           <Button
             variant="danger"
-            onClick={() => alert('Are you sure you want to delete your account? This action cannot be undone.')}
+            onClick={() =>
+              alert(
+                'Are you sure you want to delete your account? This action cannot be undone.'
+              )
+            }
           >
             Delete Account
           </Button>
